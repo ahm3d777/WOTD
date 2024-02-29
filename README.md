@@ -1,0 +1,2 @@
+# WOTD
+ WORD OF THE DAY
