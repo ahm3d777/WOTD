@@ -1,0 +1,365 @@
+/* Global Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+    line-height: 1.6; /* Improved readability with increased line height */
+}
+
+/* Header Styles */
+header {
+    background: linear-gradient(90deg, #091356, #1d3e91, #00bcd4);
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+    overflow: hidden; /* Hide overflowing content */
+    border-radius: 10px; /* Add border radius for a softer look */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+}
+
+/* Header Decoration */
+.header-decor {
+    position: absolute;
+    top: 0;
+    left: 50%; /* Position from the middle */
+    transform: translateX(-50%); /* Center horizontally */
+    width: 2px; /* Width of the vertical line */
+    height: 100%;
+    background-color: #fff; /* White color for the line */
+    z-index: 1; /* Ensure it's above other elements */
+}
+
+.header-decor.left {
+    left: 0; /* Position on the left side */
+}
+
+.header-decor.right {
+    right: 0; /* Position on the right side */
+}
+
+.header-content {
+    position: relative;
+    z-index: 2; /* Ensure the content stays above the decoration */
+}
+
+.logo {
+    display: inline-block; /* Ensures elements are positioned inline */
+    vertical-align: middle; /* Aligns elements vertically */
+}
+
+.date,
+.welcome-message {
+    display: inline-block; /* Ensures elements are positioned inline */
+    vertical-align: middle; /* Aligns elements vertically */
+}
+
+.header-content {
+    position: relative;
+    z-index: 1; /* Ensure the content stays above the decoration */
+}
+
+header:hover .header-decor {
+    animation: pulse 2s infinite; /* Add pulsating animation on hover */
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05); /* Slightly increase scale */
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+/* Add pseudo element for header decoration */
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.01) 100%);
+}
+
+.logo img {
+    width: 100px;
+    height: auto;
+    border-radius: 50%;
+    border: 2px solid #000000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for transform and box-shadow */
+    animation: floating 3s ease-in-out infinite alternate; /* Add floating animation */
+}
+
+.logo img:hover {
+    transform: scale(1.1); /* Scale up on hover */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes floating {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-10px); /* Float up */
+    }
+}
+
+.date {
+    font-size: 25px; /* Increased font size for better visibility */
+    color: #00bcd4; /* Changed color to a more noticeable one */
+    margin-top: 15px; /* Adjusted margin for better spacing */
+    text-transform: uppercase; /* Convert text to uppercase for emphasis */
+    font-weight: bold; /* Added bold font weight for emphasis */
+    letter-spacing: 1px; /* Added letter spacing for improved readability */
+}
+
+
+.welcome-message h1 {
+    font-family: 'Raleway', sans-serif; /* New font family */
+    font-size: 25px; /* Font size */
+    margin-top: 30px; /* Margin top */
+    color: #999a9ccb; /* Color */
+    text-transform: uppercase; /* Uppercase text */
+    animation: slideInRight 1s ease-out; /* Animation */
+}
+
+@keyframes slideInRight {
+    0% {
+        opacity: 0; /* Initial opacity */
+        transform: translateX(100px); /* Initial position */
+    }
+    100% {
+        opacity: 1; /* Full opacity */
+        transform: translateX(0); /* Final position */
+    }
+}
+
+/* Main Content Styles */
+
+
+.container:hover {
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); /* Increase box shadow on hover */
+}
+
+/* Add decorative overlay */
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent white overlay */
+    pointer-events: none; /* Allow interaction with underlying content */
+    z-index: 1; /* Ensure overlay stays below content */
+}
+
+/* Add border for a subtle separation */
+.container::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 2px solid #ccc; /* Border color */
+    border-radius: 18px; /* Match container border radius minus border width */
+    pointer-events: none; /* Allow interaction with underlying content */
+    z-index: 2; /* Ensure border stays above overlay */
+}
+/* Pronunciation Button Styles */
+.pronunciation-button {
+    background-color: #00bcd4;
+    color: #fff;
+    border: none;
+    padding: 10px 20px; /* Increased padding for better clickability */
+    margin: 5px 100px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Added transition for transform */
+    font-size: 16px; /* Increased font size for better readability */
+    display: inline-block; /* Ensures buttons are positioned inline */
+}
+
+.pronunciation-button:hover {
+    background-color: #0097a7;
+    transform: translateY(-2px); /* Lift button slightly on hover for visual feedback */
+}
+
+/* Word Styles */
+.word {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(90deg, #091356, #1d3e91, #00bcd4);
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Increased shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for transform and shadow */
+    position: relative;
+    overflow: hidden; /* Hide overflowing content */
+}
+
+.word:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); /* Increase shadow on hover */
+}
+
+.word h2 {
+    font-size: 28px; /* Keep font size */
+    color: #fff; /* Keep color */
+    margin-bottom: 15px; /* Keep margin */
+    text-align: center; /* Center align the text */
+}
+
+.word::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent overlay */
+    z-index: 1; /* Ensure the overlay is behind the text */
+    opacity: 0; /* Initially transparent */
+    transition: opacity 0.3s ease; /* Smooth transition for opacity */
+    pointer-events: none; /* Allow clicks to pass through */
+}
+
+
+.word:hover::before {
+    opacity: 1; /* Show overlay on hover */
+}
+/* Pronunciation Styles */
+.pronunciation {
+    font-style: italic;
+    font-size: 16px; /* Keep font size */
+    color: #ffffff; /* Slightly adjusted color for better contrast */
+    margin-bottom: 10px; /* Keep margin */
+    text-align: center; /* Center align the text */
+}
+
+/* Bengali Meaning Styles */
+.bengali-meaning {
+    font-size: 18px; /* Keep font size */
+    color: #ffffff; /* Slightly adjusted color for better contrast */
+    text-align: center; /* Center align the text */
+    font-weight: bold; /* Keep bold font weight */
+    margin-bottom: 20px; /* Keep margin */
+}
+
+/* Decorative Elements */
+.decorative-line {
+    height: 2px;
+    background-color: #ddd;
+    margin-bottom: 20px;
+}
+
+.decorative-circle {
+    width: 20px;
+    height: 20px;
+    background-color: #00bcd4;
+    border-radius: 50%;
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+
+.decorative-line, .decorative-circle {
+    display: block;
+}
+
+/* Geometric Decorations */
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.geometric-shape {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background-color: #00bcd4;
+    border-radius: 50%;
+    animation: rotate 10s linear infinite;
+}
+
+.geometric-shape:nth-child(1) {
+    top: 20%;
+    left: 10%;
+}
+
+.geometric-shape:nth-child(2) {
+    top: 50%;
+    left: 30%;
+}
+
+.geometric-shape:nth-child(3) {
+    top: 80%;
+    left: 60%;
+}
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center; /* Center the button horizontally */
+    margin-top: 1rem; /* Using relative units for margin */
+    margin-bottom: 0.5rem; /* Using relative units for margin */
+}
+
+.btn {
+    padding: 1rem 2rem; /* Using relative units for padding */
+    background-color: #00bcd4;
+    color: #fff;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    font-size: 1rem; /* Using relative units for font size */
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Adjust button styles for smaller screens */
+@media (max-width: 768px) {
+    .btn {
+        padding: 0.8rem 1.6rem; /* Adjust padding for smaller screens */
+        font-size: 0.9rem; /* Adjust font size for smaller screens */
+    }
+}
+
+.btn:hover {
+    background-color: #0097a7;
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn:focus {
+    box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.4);
+}

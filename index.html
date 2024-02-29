@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Words of the Day</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="logo">
+        <img src="./vector/default.svg" alt="Logo">
+    </div>
+    <div class="date" id="currentDate"></div>
+    <div class="welcome-message">
+        <h1>Welcome to Our Website!</h1>
+    </div>
+</header>
+
+<div class="container">
+  <h1>Words of the Day</h1>
+  
+  <div class="word">
+      <h2>Ephemeral</h2>
+      <div class="pronunciation">[prəˌnʌnsiˈeɪʃən]</div>
+      <button class="pronunciation-button" data-audio="">English Pronunciation</button>
+      <audio class="audio-player" src="enhanced/Ephemeral (enhanced).wav"></audio>
+      <button class="pronunciation-button" data-audio="bengali_audio_file_path_1.mp3">বাংলা উচ্চারণ</button>
+      <audio class="audio-player" src="enhanced/ephemeral bengali (enhanced).wav"></audio>
+      <div class="bengali-meaning">অল্পক্ষণস্থায়ী</div>
+  </div>
+
+  <div class="word">
+      <h2>Incendiary</h2>
+      <div class="pronunciation">[prəˌnʌnsiˈeɪʃən]</div>
+      <button class="pronunciation-button" data-audio="">English Pronunciation</button>
+      <audio class="audio-player" src="enhanced/Incendiary (enhanced).wav"></audio>
+      <button class="pronunciation-button" data-audio="bengali_audio_file_path_2.mp3">বাংলা উচ্চারণ</button>
+      <audio class="audio-player" src="enhanced/Incendiary bengali (enhanced).wav"></audio>
+      <div class="bengali-meaning">উত্তেজনা সৃষ্টিকারী</div>
+  </div>
+
+  <div class="word">
+      <h2>Rhetoric</h2>
+      <div class="pronunciation">[prəˌnʌnsiˈeɪʃən]</div>
+      <button class="pronunciation-button" data-audio="">English Pronunciation</button>
+      <audio class="audio-player" src="enhanced/Rhetoric (enhanced).wav"></audio>
+      <button class="pronunciation-button" data-audio="bengali_audio_file_path_3.mp3">বাংলা উচ্চারণ</button>
+      <audio class="audio-player" src="enhanced/Rhetoric bengali (enhanced).wav"></audio>
+      <div class="bengali-meaning">আড়ম্বরপূর্ণ ভাষা</div>
+  </div>
+
+  <div class="word">
+      <h2>Scintilla</h2>
+      <div class="pronunciation">[prəˌnʌnsiˈeɪʃən]</div>
+      <button class="pronunciation-button" data-audio="">English Pronunciation</button>
+      <audio class="audio-player" src="enhanced/Scintilla (enhanced).wav"></audio>
+      <button class="pronunciation-button" data-audio="bengali_audio_file_path_4.mp3">বাংলা উচ্চারণ</button>
+      <audio class="audio-player" src="enhanced/Scintilla bengali (enhanced).wav"></audio>
+      <div class="bengali-meaning">ফুলকি; কণা;</div>
+  </div>
+
+  <div class="word">
+      <h2>Zenith</h2>
+      <div class="pronunciation">[prəˌnʌnsiˈeɪʃən]</div>
+      <button class="pronunciation-button" data-audio="">English Pronunciation</button>
+      <audio class="audio-player" src="enhanced/Zenith (enhanced).wav"></audio>
+      <button class="pronunciation-button" data-audio="bengali_audio_file_path_5.mp3">বাংলা উচ্চারণ</button>
+      <audio class="audio-player" src="enhanced/Zenith bengali (enhanced).wav"></audio>
+      <div class="bengali-meaning">সর্বোচ্চ স্থান</div>
+  </div>
+
+  <div class="word">
+      <h2>Dulcet</h2>
+      <div class="pronunciation">[prəˌnʌnsiˈeɪʃən]</div>
+      <button class="pronunciation-button" data-audio="">English Pronunciation</button>
+      <audio class="audio-player" src="enhanced/Dulcet (enhanced).wav"></audio>
+      <button class="pronunciation-button" data-audio="bengali_audio_file_path_6.mp3">বাংলা উচ্চারণ</button>
+      <audio class="audio-player" src="enhanced/Dulcet bengali (enhanced).wav"></audio>
+      <div class="bengali-meaning">সুমধুর</div>
+  </div>
+
+  <!-- Add more words with pronunciation buttons -->
+</div>
+<div class="btn-container">
+  <a href="index2.html" class="btn">Next Day</a>
+</div>
+
+<script>
+// Function to play audio
+function playAudio(button) {
+  const audio = button.nextElementSibling; // Get the next sibling which is the <audio> element
+  audio.play(); // Play audio
+}
+
+// Add event listener to container for pronunciation buttons
+const container = document.querySelector('.container');
+container.addEventListener('click', function(event) {
+  const target = event.target;
+  if (target.classList.contains('pronunciation-button')) {
+    playAudio(target);
+  }
+});
+
+</script>
+
+</body>
+</html>
