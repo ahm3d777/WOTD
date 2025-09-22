@@ -1,109 +1,624 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Words of the Day</title>
-<link rel="stylesheet" href="styles.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Words of the Day - Daily Vocabulary Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .main-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .brand-info h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.2rem;
+        }
+
+        .brand-tagline {
+            font-size: 0.9rem;
+            color: #718096;
+            font-weight: 400;
+        }
+
+        .date-display {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+        }
+
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .word-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .word-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .word-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .word-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .pronunciation {
+            font-size: 1rem;
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            font-family: 'Lucida Sans Unicode', sans-serif;
+        }
+
+        .audio-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .pronunciation-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pronunciation-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .pronunciation-button:active {
+            transform: translateY(0);
+        }
+
+        .pronunciation-button.playing {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .bengali-meaning {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            margin-top: 1rem;
+        }
+
+        .bengali-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .meaning-label {
+            font-size: 0.85rem;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .navigation {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .nav-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            color: #667eea;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+        }
+
+        .nav-button:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .audio-player {
+            display: none;
+        }
+
+        .stats-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-item {
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .page-title h2 {
+                font-size: 2rem;
+            }
+
+            .words-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .word-card {
+                padding: 1.5rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            header {
+                padding: 1rem;
+            }
+        }
+
+        .loading-indicator {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="logo">
-        <img src="./vector/default.svg" alt="Logo">
+    <div class="main-container">
+        <header>
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">W</div>
+                    <div class="brand-info">
+                        <h1>WordMaster</h1>
+                        <div class="brand-tagline">Daily Vocabulary Builder</div>
+                    </div>
+                </div>
+                <div class="date-display" id="currentDate"></div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="page-title">
+                <h2>Today's Featured Words</h2>
+                <div class="page-subtitle">Expand your vocabulary with carefully selected words</div>
+            </div>
+
+            <div class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">6</span>
+                        <span class="stat-label">Words Today</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">2</span>
+                        <span class="stat-label">Languages</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Audio Support</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="words-grid">
+                <div class="word-card">
+                    <h3 class="word-title">Ephemeral</h3>
+                    <div class="pronunciation">/ɪˈfem.ər.əl/</div>
+                    <div class="audio-section">
+                        <button class="pronunciation-button" onclick="playAudio(this, 'english')">
+                            🔊 English Pronunciation
+                        </button>
+                        <audio class="audio-player" src="enhanced/Ephemeral (enhanced).wav"></audio>
+                        <button class="pronunciation-button" onclick="playAudio(this, 'bengali')">
+                            🔊 বাংলা উচ্চারণ
+                        </button>
+                        <audio class="audio-player" src="enhanced/ephemeral bengali (enhanced).wav"></audio>
+                    </div>
+                    <div class="bengali-meaning">
+                        <div class="meaning-label">Bengali Meaning</div>
+                        <div class="bengali-text">অল্পক্ষণস্থায়ী</div>
+                    </div>
+                </div>
+
+                <div class="word-card">
+                    <h3 class="word-title">Incendiary</h3>
+                    <div class="pronunciation">/ɪnˈsen.di.er.i/</div>
+                    <div class="audio-section">
+                        <button class="pronunciation-button" onclick="playAudio(this, 'english')">
+                            🔊 English Pronunciation
+                        </button>
+                        <audio class="audio-player" src="enhanced/Incendiary (enhanced).wav"></audio>
+                        <button class="pronunciation-button" onclick="playAudio(this, 'bengali')">
+                            🔊 বাংলা উচ্চারণ
+                        </button>
+                        <audio class="audio-player" src="enhanced/Incendiary bengali (enhanced).wav"></audio>
+                    </div>
+                    <div class="bengali-meaning">
+                        <div class="meaning-label">Bengali Meaning</div>
+                        <div class="bengali-text">উত্তেজনা সৃষ্টিকারী</div>
+                    </div>
+                </div>
+
+                <div class="word-card">
+                    <h3 class="word-title">Rhetoric</h3>
+                    <div class="pronunciation">/ˈret.ər.ɪk/</div>
+                    <div class="audio-section">
+                        <button class="pronunciation-button" onclick="playAudio(this, 'english')">
+                            🔊 English Pronunciation
+                        </button>
+                        <audio class="audio-player" src="enhanced/Rhetoric (enhanced).wav"></audio>
+                        <button class="pronunciation-button" onclick="playAudio(this, 'bengali')">
+                            🔊 বাংলা উচ্চারণ
+                        </button>
+                        <audio class="audio-player" src="enhanced/Rhetoric bengali (enhanced).wav"></audio>
+                    </div>
+                    <div class="bengali-meaning">
+                        <div class="meaning-label">Bengali Meaning</div>
+                        <div class="bengali-text">আড়ম্বরপূর্ণ ভাষা</div>
+                    </div>
+                </div>
+
+                <div class="word-card">
+                    <h3 class="word-title">Scintilla</h3>
+                    <div class="pronunciation">/sɪnˈtɪl.ə/</div>
+                    <div class="audio-section">
+                        <button class="pronunciation-button" onclick="playAudio(this, 'english')">
+                            🔊 English Pronunciation
+                        </button>
+                        <audio class="audio-player" src="enhanced/Scintilla (enhanced).wav"></audio>
+                        <button class="pronunciation-button" onclick="playAudio(this, 'bengali')">
+                            🔊 বাংলা উচ্চারণ
+                        </button>
+                        <audio class="audio-player" src="enhanced/Scintilla bengali (enhanced).wav"></audio>
+                    </div>
+                    <div class="bengali-meaning">
+                        <div class="meaning-label">Bengali Meaning</div>
+                        <div class="bengali-text">ফুলকি; কণা</div>
+                    </div>
+                </div>
+
+                <div class="word-card">
+                    <h3 class="word-title">Zenith</h3>
+                    <div class="pronunciation">/ˈziː.nɪθ/</div>
+                    <div class="audio-section">
+                        <button class="pronunciation-button" onclick="playAudio(this, 'english')">
+                            🔊 English Pronunciation
+                        </button>
+                        <audio class="audio-player" src="enhanced/Zenith (enhanced).wav"></audio>
+                        <button class="pronunciation-button" onclick="playAudio(this, 'bengali')">
+                            🔊 বাংলা উচ্চারণ
+                        </button>
+                        <audio class="audio-player" src="enhanced/Zenith bengali (enhanced).wav"></audio>
+                    </div>
+                    <div class="bengali-meaning">
+                        <div class="meaning-label">Bengali Meaning</div>
+                        <div class="bengali-text">সর্বোচ্চ স্থান</div>
+                    </div>
+                </div>
+
+                <div class="word-card">
+                    <h3 class="word-title">Dulcet</h3>
+                    <div class="pronunciation">/ˈdʌl.sɪt/</div>
+                    <div class="audio-section">
+                        <button class="pronunciation-button" onclick="playAudio(this, 'english')">
+                            🔊 English Pronunciation
+                        </button>
+                        <audio class="audio-player" src="enhanced/Dulcet (enhanced).wav"></audio>
+                        <button class="pronunciation-button" onclick="playAudio(this, 'bengali')">
+                            🔊 বাংলা উচ্চারণ
+                        </button>
+                        <audio class="audio-player" src="enhanced/Dulcet bengali (enhanced).wav"></audio>
+                    </div>
+                    <div class="bengali-meaning">
+                        <div class="meaning-label">Bengali Meaning</div>
+                        <div class="bengali-text">সুমধুর</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <a href="index2.html" class="nav-button">
+                    Next Day →
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="date" id="currentDate"></div>
-    <div class="welcome-message">
-        <h1>Welcome to Our Website!</h1>
+
+    <div class="loading-indicator" id="loadingIndicator">
+        <div class="spinner"></div>
+        <div>Loading audio...</div>
     </div>
-</header>
 
-<div class="container">
-  <h1>Words of the Day</h1>
-  
-  <div class="word">
-      <h2>Ephemeral</h2>
-      <div class="pronunciation">[prəˌnʌnsiˈeɪʃən]</div>
-      <button class="pronunciation-button" data-audio="">English Pronunciation</button>
-      <audio class="audio-player" src="enhanced/Ephemeral (enhanced).wav"></audio>
-      <button class="pronunciation-button" data-audio="bengali_audio_file_path_1.mp3">বাংলা উচ্চারণ</button>
-      <audio class="audio-player" src="enhanced/ephemeral bengali (enhanced).wav"></audio>
-      <div class="bengali-meaning">অল্পক্ষণস্থায়ী</div>
-  </div>
+    <script>
+        // Initialize date display
+        function updateDate() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+        }
 
-  <div class="word">
-      <h2>Incendiary</h2>
-      <div class="pronunciation">[prəˌnʌnsiˈeɪʃən]</div>
-      <button class="pronunciation-button" data-audio="">English Pronunciation</button>
-      <audio class="audio-player" src="enhanced/Incendiary (enhanced).wav"></audio>
-      <button class="pronunciation-button" data-audio="bengali_audio_file_path_2.mp3">বাংলা উচ্চারণ</button>
-      <audio class="audio-player" src="enhanced/Incendiary bengali (enhanced).wav"></audio>
-      <div class="bengali-meaning">উত্তেজনা সৃষ্টিকারী</div>
-  </div>
+        // Audio playback function with enhanced UX
+        function playAudio(button, language) {
+            const audio = button.nextElementSibling;
+            const allButtons = document.querySelectorAll('.pronunciation-button');
+            
+            // Stop all other audio and remove playing class
+            allButtons.forEach(btn => {
+                const btnAudio = btn.nextElementSibling;
+                if (btnAudio && btnAudio !== audio) {
+                    btnAudio.pause();
+                    btnAudio.currentTime = 0;
+                }
+                btn.classList.remove('playing');
+            });
 
-  <div class="word">
-      <h2>Rhetoric</h2>
-      <div class="pronunciation">[prəˌnʌnsiˈeɪʃən]</div>
-      <button class="pronunciation-button" data-audio="">English Pronunciation</button>
-      <audio class="audio-player" src="enhanced/Rhetoric (enhanced).wav"></audio>
-      <button class="pronunciation-button" data-audio="bengali_audio_file_path_3.mp3">বাংলা উচ্চারণ</button>
-      <audio class="audio-player" src="enhanced/Rhetoric bengali (enhanced).wav"></audio>
-      <div class="bengali-meaning">আড়ম্বরপূর্ণ ভাষা</div>
-  </div>
+            // Add loading state
+            button.classList.add('playing');
+            
+            // Handle audio loading and playback
+            audio.addEventListener('loadstart', function() {
+                button.textContent = language === 'bengali' ? '🔄 Loading...' : '🔄 Loading...';
+            });
 
-  <div class="word">
-      <h2>Scintilla</h2>
-      <div class="pronunciation">[prəˌnʌnsiˈeɪʃən]</div>
-      <button class="pronunciation-button" data-audio="">English Pronunciation</button>
-      <audio class="audio-player" src="enhanced/Scintilla (enhanced).wav"></audio>
-      <button class="pronunciation-button" data-audio="bengali_audio_file_path_4.mp3">বাংলা উচ্চারণ</button>
-      <audio class="audio-player" src="enhanced/Scintilla bengali (enhanced).wav"></audio>
-      <div class="bengali-meaning">ফুলকি; কণা;</div>
-  </div>
+            audio.addEventListener('canplay', function() {
+                const originalText = language === 'bengali' ? '🔊 বাংলা উচ্চারণ' : '🔊 English Pronunciation';
+                button.textContent = originalText;
+            });
 
-  <div class="word">
-      <h2>Zenith</h2>
-      <div class="pronunciation">[prəˌnʌnsiˈeɪʃən]</div>
-      <button class="pronunciation-button" data-audio="">English Pronunciation</button>
-      <audio class="audio-player" src="enhanced/Zenith (enhanced).wav"></audio>
-      <button class="pronunciation-button" data-audio="bengali_audio_file_path_5.mp3">বাংলা উচ্চারণ</button>
-      <audio class="audio-player" src="enhanced/Zenith bengali (enhanced).wav"></audio>
-      <div class="bengali-meaning">সর্বোচ্চ স্থান</div>
-  </div>
+            audio.addEventListener('ended', function() {
+                button.classList.remove('playing');
+            });
 
-  <div class="word">
-      <h2>Dulcet</h2>
-      <div class="pronunciation">[prəˌnʌnsiˈeɪʃən]</div>
-      <button class="pronunciation-button" data-audio="">English Pronunciation</button>
-      <audio class="audio-player" src="enhanced/Dulcet (enhanced).wav"></audio>
-      <button class="pronunciation-button" data-audio="bengali_audio_file_path_6.mp3">বাংলা উচ্চারণ</button>
-      <audio class="audio-player" src="enhanced/Dulcet bengali (enhanced).wav"></audio>
-      <div class="bengali-meaning">সুমধুর</div>
-  </div>
+            // Play the audio
+            audio.play().catch(function(error) {
+                console.log('Audio playback failed:', error);
+                button.classList.remove('playing');
+                
+                // Show user-friendly error message
+                const originalText = button.textContent;
+                button.textContent = '❌ Audio not available';
+                setTimeout(() => {
+                    const defaultText = language === 'bengali' ? '🔊 বাংলা উচ্চারণ' : '🔊 English Pronunciation';
+                    button.textContent = defaultText;
+                }, 2000);
+            });
+        }
 
-  <!-- Add more words with pronunciation buttons -->
-</div>
-<div class="btn-container">
-  <a href="index2.html" class="btn">Next Day</a>
-</div>
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDate();
+            
+            // Add smooth scroll behavior
+            document.documentElement.style.scrollBehavior = 'smooth';
+            
+            // Add keyboard accessibility
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    if (e.target.classList.contains('pronunciation-button')) {
+                        e.preventDefault();
+                        e.target.click();
+                    }
+                }
+            });
 
-<script>
-// Function to play audio
-function playAudio(button) {
-  const audio = button.nextElementSibling; // Get the next sibling which is the <audio> element
-  audio.play(); // Play audio
-}
+            // Add progressive enhancement for animations
+            const cards = document.querySelectorAll('.word-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
 
-// Add event listener to container for pronunciation buttons
-const container = document.querySelector('.container');
-container.addEventListener('click', function(event) {
-  const target = event.target;
-  if (target.classList.contains('pronunciation-button')) {
-    playAudio(target);
-  }
-});
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        });
 
-</script>
-
+        // Performance optimization: Preload audio on hover
+        document.querySelectorAll('.pronunciation-button').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                const audio = this.nextElementSibling;
+                if (audio && audio.readyState === 0) {
+                    audio.load();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
