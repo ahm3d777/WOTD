@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WordMaster - Professional vocabulary learning platform with interactive features, progress tracking, and bilingual support">
+    <title>WordMaster - Advanced Vocabulary Learning Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="8" fill="url(#logo-gradient)"/>
+                            <text x="20" y="28" font-family="Inter" font-weight="700" font-size="20" fill="white" text-anchor="middle">W</text>
+                            <defs>
+                                <linearGradient id="logo-gradient" x1="0" y1="0" x2="40" y2="40">
+                                    <stop offset="0%" stop-color="#667eea"/>
+                                    <stop offset="100%" stop-color="#764ba2"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="brand-info">
+                        <h1>WordMaster</h1>
+                        <div class="brand-tagline">Advanced Vocabulary Platform</div>
+                    </div>
+                </div>
+
+                <div class="header-actions">
+                    <div class="date-display" id="currentDate"></div>
+                    <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle dark mode">
+                        🌙
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <div class="nav-content">
+                <div class="view-buttons">
+                    <button class="view-btn active" data-view="all" onclick="app.setView('all')">
+                        📚 All Words
+                    </button>
+                    <button class="view-btn" data-view="favorites" onclick="app.setView('favorites')">
+                        ★ Favorites
+                    </button>
+                    <button class="view-btn" data-view="learned" onclick="app.setView('learned')">
+                        ✓ Learned
+                    </button>
+                    <button class="view-btn" data-view="unlearned" onclick="app.setView('unlearned')">
+                        📝 To Learn
+                    </button>
+                </div>
+
+                <div class="nav-actions">
+                    <button class="nav-action-btn" onclick="app.startQuiz()" title="Start Quiz">
+                        🎯 Quiz
+                    </button>
+                    <button class="nav-action-btn" onclick="document.getElementById('exportModal').style.display='block'" title="Export Data">
+                        💾 Export
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <div class="container">
+                <!-- Dashboard Section -->
+                <section class="dashboard-section">
+                    <h2 class="section-title">Your Progress</h2>
+                    <div id="statsSection" class="stats-section">
+                        <!-- Stats will be dynamically populated -->
+                    </div>
+                </section>
+
+                <!-- Filters Section -->
+                <section class="filters-section">
+                    <div class="filters-container">
+                        <div class="search-box">
+                            <input
+                                type="text"
+                                id="searchInput"
+                                class="search-input"
+                                placeholder="🔍 Search words, definitions, or meanings..."
+                            />
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="categoryFilter">Category:</label>
+                            <select id="categoryFilter" class="filter-select">
+                                <option value="all">All Categories</option>
+                                <option value="descriptive">Descriptive</option>
+                                <option value="communication">Communication</option>
+                                <option value="quantity">Quantity</option>
+                                <option value="position">Position</option>
+                                <option value="emotion">Emotion</option>
+                                <option value="action">Action</option>
+                                <option value="personality">Personality</option>
+                                <option value="time">Time</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="difficultyFilter">Difficulty:</label>
+                            <select id="difficultyFilter" class="filter-select">
+                                <option value="all">All Levels</option>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Words Grid -->
+                <section class="words-section">
+                    <div id="wordsGrid" class="words-grid">
+                        <!-- Words will be dynamically populated -->
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>WordMaster</h3>
+                    <p>Your daily companion for vocabulary mastery</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Features</h4>
+                    <ul>
+                        <li>Interactive Learning</li>
+                        <li>Progress Tracking</li>
+                        <li>Quiz Mode</li>
+                        <li>Bilingual Support</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#" onclick="app.exportProgress(); return false;">Export Progress</a></li>
+                        <li><a href="#" onclick="app.startQuiz(); return false;">Take Quiz</a></li>
+                        <li><a href="index.html">Classic View</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 WordMaster. Made with ❤️ for language learners.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div id="quizContainer" class="quiz-container" style="display: none;">
+        <!-- Quiz content will be dynamically populated -->
+    </div>
+
+    <!-- Export Modal -->
+    <div id="exportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Export Your Data</h2>
+                <button class="modal-close" onclick="document.getElementById('exportModal').style.display='none'">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <button class="export-btn" onclick="app.exportProgress()">
+                        <span class="export-icon">📊</span>
+                        <div>
+                            <h3>Export Progress</h3>
+                            <p>Download your learning progress and favorites</p>
+                        </div>
+                    </button>
+                    <button class="export-btn" onclick="app.exportWordList('txt')">
+                        <span class="export-icon">📄</span>
+                        <div>
+                            <h3>Export as TXT</h3>
+                            <p>Download word list in text format</p>
+                        </div>
+                    </button>
+                    <button class="export-btn" onclick="app.exportWordList('csv')">
+                        <span class="export-icon">📊</span>
+                        <div>
+                            <h3>Export as CSV</h3>
+                            <p>Download word list as spreadsheet</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="spinner-container">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+</body>
+</html>
