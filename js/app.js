@@ -12,16 +12,24 @@ class WordMasterApp {
         this.filterDifficulty = 'all';
         this.darkMode = this.loadFromStorage('darkMode') || false;
         this.currentQuiz = null;
+        this.itemsPerPage = 12;
+        this.currentPage = 1;
+        this.showWelcome = !this.loadFromStorage('welcomeDismissed');
         this.init();
     }
 
     async init() {
+        this.showLoadingOverlay();
         await this.loadWords();
         this.setupEventListeners();
         this.applyDarkMode();
         this.renderDashboard();
         this.renderWords();
         this.updateStats();
+        this.hideLoadingOverlay();
+        if (this.showWelcome) {
+            this.showWelcomeModal();
+        }
     }
 
     // Data Loading
@@ -136,10 +144,26 @@ class WordMasterApp {
                     <p>Try adjusting your filters or search query</p>
                 </div>
             `;
+            this.hidePagination();
             return;
         }
 
-        container.innerHTML = filtered.map(word => this.createWordCard(word)).join('');
+        // Calculate pagination
+        const totalPages = Math.ceil(filtered.length / this.itemsPerPage);
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        const paginatedWords = filtered.slice(startIndex, endIndex);
+
+        // Render words with fade-in animation
+        container.innerHTML = paginatedWords.map((word, index) => {
+            return `<div class="word-card-wrapper" style="animation-delay: ${index * 0.05}s">${this.createWordCard(word)}</div>`;
+        }).join('');
+
+        // Render pagination
+        this.renderPagination(filtered.length, totalPages);
+
+        // Scroll to top smoothly
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     createWordCard(word) {
@@ -578,6 +602,226 @@ class WordMasterApp {
             };
             dateElement.textContent = now.toLocaleDateString('en-US', options);
         }
+    }
+
+    // Pagination Methods
+    renderPagination(totalItems, totalPages) {
+        const paginationContainer = document.getElementById('paginationContainer');
+        if (!paginationContainer) return;
+
+        if (totalPages <= 1) {
+            paginationContainer.style.display = 'none';
+            return;
+        }
+
+        paginationContainer.style.display = 'flex';
+
+        const pages = [];
+        const maxVisiblePages = 5;
+        let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+        if (endPage - startPage + 1 < maxVisiblePages) {
+            startPage = Math.max(1, endPage - maxVisiblePages + 1);
+        }
+
+        // Previous button
+        pages.push(`
+            <button class="pagination-btn"
+                    ${this.currentPage === 1 ? 'disabled' : ''}
+                    onclick="app.goToPage(${this.currentPage - 1})">
+                ← Previous
+            </button>
+        `);
+
+        // First page
+        if (startPage > 1) {
+            pages.push(`
+                <button class="pagination-btn" onclick="app.goToPage(1)">1</button>
+            `);
+            if (startPage > 2) {
+                pages.push(`<span class="pagination-dots">...</span>`);
+            }
+        }
+
+        // Page numbers
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(`
+                <button class="pagination-btn ${i === this.currentPage ? 'active' : ''}"
+                        onclick="app.goToPage(${i})">
+                    ${i}
+                </button>
+            `);
+        }
+
+        // Last page
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+                pages.push(`<span class="pagination-dots">...</span>`);
+            }
+            pages.push(`
+                <button class="pagination-btn" onclick="app.goToPage(${totalPages})">${totalPages}</button>
+            `);
+        }
+
+        // Next button
+        pages.push(`
+            <button class="pagination-btn"
+                    ${this.currentPage === totalPages ? 'disabled' : ''}
+                    onclick="app.goToPage(${this.currentPage + 1})">
+                Next →
+            </button>
+        `);
+
+        paginationContainer.innerHTML = `
+            <div class="pagination-info">
+                Showing ${((this.currentPage - 1) * this.itemsPerPage) + 1} - ${Math.min(this.currentPage * this.itemsPerPage, totalItems)} of ${totalItems} words
+            </div>
+            <div class="pagination-buttons">
+                ${pages.join('')}
+            </div>
+        `;
+    }
+
+    hidePagination() {
+        const paginationContainer = document.getElementById('paginationContainer');
+        if (paginationContainer) {
+            paginationContainer.style.display = 'none';
+        }
+    }
+
+    goToPage(page) {
+        this.currentPage = page;
+        this.renderWords();
+    }
+
+    resetPagination() {
+        this.currentPage = 1;
+    }
+
+    // Loading Overlay Methods
+    showLoadingOverlay() {
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+        }
+    }
+
+    hideLoadingOverlay() {
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) {
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 500);
+        }
+    }
+
+    // Welcome Modal
+    showWelcomeModal() {
+        const modal = document.getElementById('welcomeModal');
+        if (!modal) {
+            this.createWelcomeModal();
+            return;
+        }
+        modal.style.display = 'flex';
+    }
+
+    createWelcomeModal() {
+        const modalHTML = `
+            <div id="welcomeModal" class="modal welcome-modal" style="display: flex;">
+                <div class="modal-content welcome-content">
+                    <div class="welcome-header">
+                        <div class="welcome-logo">
+                            <svg width="60" height="60" viewBox="0 0 60 60">
+                                <rect width="60" height="60" rx="12" fill="url(#welcome-gradient)"/>
+                                <text x="30" y="42" font-family="Inter" font-weight="700" font-size="30" fill="white" text-anchor="middle">W</text>
+                                <defs>
+                                    <linearGradient id="welcome-gradient" x1="0" y1="0" x2="60" y2="60">
+                                        <stop offset="0%" stop-color="#667eea"/>
+                                        <stop offset="100%" stop-color="#764ba2"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <h2>Welcome to WordMaster!</h2>
+                        <p>Your journey to vocabulary excellence starts here</p>
+                    </div>
+
+                    <div class="welcome-features">
+                        <div class="welcome-feature">
+                            <div class="feature-icon">📚</div>
+                            <h3>105+ Words</h3>
+                            <p>Curated vocabulary across multiple categories and difficulty levels</p>
+                        </div>
+                        <div class="welcome-feature">
+                            <div class="feature-icon">🎯</div>
+                            <h3>Track Progress</h3>
+                            <p>Mark words as learned and see your improvement over time</p>
+                        </div>
+                        <div class="welcome-feature">
+                            <div class="feature-icon">⭐</div>
+                            <h3>Favorites</h3>
+                            <p>Bookmark important words for quick review</p>
+                        </div>
+                        <div class="welcome-feature">
+                            <div class="feature-icon">🎓</div>
+                            <h3>Quiz Mode</h3>
+                            <p>Test your knowledge with interactive quizzes</p>
+                        </div>
+                    </div>
+
+                    <div class="welcome-actions">
+                        <button class="action-btn primary large-btn" onclick="app.dismissWelcome()">
+                            Get Started
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+
+    dismissWelcome() {
+        const modal = document.getElementById('welcomeModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+        this.saveToStorage('welcomeDismissed', true);
+        this.showWelcome = false;
+    }
+
+    // Update view method to reset pagination
+    setView(view) {
+        this.currentView = view;
+
+        // Update active state of view buttons
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`[data-view="${view}"]`)?.classList.add('active');
+
+        this.resetPagination();
+        this.renderWords();
+    }
+
+    // Update search and filter methods to reset pagination
+    setSearchQuery(query) {
+        this.searchQuery = query;
+        this.resetPagination();
+        this.renderWords();
+    }
+
+    setCategory(category) {
+        this.filterCategory = category;
+        this.resetPagination();
+        this.renderWords();
+    }
+
+    setDifficulty(difficulty) {
+        this.filterDifficulty = difficulty;
+        this.resetPagination();
+        this.renderWords();
     }
 }
 
